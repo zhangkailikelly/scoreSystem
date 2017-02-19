@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/jquery.js"></script>
+    <style>
+        #main {
+            width: 80%;
+            border-style: hidden;
+            border-bottom: 1px solid #000;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+        }
+        h3 {
+            text-align: center;
+            position: fixed;
+            bottom: 10px;
+            width: 100%;
+            display: none;
+        }
+        .line {
+            position: absolute;
+            bottom: 0;
+            height: 0;
+        }
+
+        .name {
+            font-size: 12px;
+            position: absolute;
+            bottom: -50px;
+            width: 4.16%;
+            height: 40px;
+            text-align: center;
+        }
+
+        .line > .font {
+            text-align: center;
+            position: absolute;
+            top: -20px;
+            width: 100%;
+            height: 20px;
+            text-align: center;
+            line-height: 20px;
+        }
+
+        .png {
+            width: 50%;
+            height: 50%;
+            background-image: url("/images/man.png");
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            margin: 0 auto;
+            margin-top: 50%;
+        }
+    </style>
+</head>
+<body>
+<h2 style="text-align: center; ">比赛打分系统</h2>
+<div id="main">
+    <div class="line">
+        <div class="img">
+            <div class="png"></div>
+        </div>
+        <div class="font"></div>
+    </div>
+    <div class="line">
+        <div class="img">
+            <div class="png"></div>
+        </div>
+        <div class="font"></div>
+    </div>
+    <div class="line">
+        <div class="img">
+            <div class="png"></div>
+        </div>
+        <div class="font"></div>
+    </div>
+    <div class="line">
+        <div class="img">
+            <div class="png"></div>
+        </div>
+        <div class="font"></div>
+    </div>
+    <div class="line">
+        <div class="img">
+            <div class="png"></div>
+        </div>
+        <div class="font"></div>
+    </div>
+    <div class="line">
+        <div class="img">
+            <div class="png"></div>
+        </div>
+        <div class="font"></div>
+    </div>
+    <div class="line">
+        <div class="img">
+            <div class="png"></div>
+        </div>
+        <div class="font"></div>
+    </div>
+    <div class="line">
+        <div class="img">
+            <div class="png"></div>
+        </div>
+        <div class="font"></div>
+    </div>
+    <div class="line">
+        <div class="img">
+            <div class="png"></div>
+        </div>
+        <div class="font"></div>
+    </div>
+    <div class="line">
+        <div class="img">
+            <div class="png"></div>
+        </div>
+        <div class="font"></div>
+    </div>
+    <div class="line">
+        <div class="img">
+            <div class="png"></div>
+        </div>
+        <div class="font"></div>
+    </div>
+    <div class="line">
+        <div class="img">
+            <div class="png"></div>
+        </div>
+        <div class="font"></div>
+    </div>
+    <div class="name"></div>
+    <div class="name"></div>
+    <div class="name"></div>
+    <div class="name"></div>
+    <div class="name"></div>
+    <div class="name"></div>
+    <div class="name"></div>
+    <div class="name"></div>
+    <div class="name"></div>
+    <div class="name"></div>
+    <div class="name"></div>
+    <div class="name"></div>
+</div>
+<h3>恭喜 <span id="win"></span>获胜 </h3>
+</body>
+<script>
+    var maxScores,
+            animals,
+            timer,
+            h,
+            w,
+            indexs,
+            spedng,
+            pngs,
+            png,
+            arrs,
+            lines,
+            sort;
+
+    arrs = [
+        {name: "1队", color: "#cccccc", scores: 0},
+        {name: "2队", color: "#cccccc", scores: 0},
+        {name: "3队", color: "#cccccc", scores: 0},
+        {name: "4队", color: "#cccccc", scores: 0},
+        {name: "5队", color: "#cccccc", scores: 0},
+        {name: "6队", color: "#cccccc", scores: 0},
+        {name: "7队", color: "#cccccc", scores: 0},
+        {name: "8队", color: "#cccccc", scores: 0},
+        {name: "9队", color: "#cccccc", scores: 0},
+        {name: "10队", color: "#cccccc", scores: 0},
+        {name: "11队", color: "#cccccc", scores: 0},
+        {name: "12队", color: "#cccccc", scores: 0},
+    ];
+
+    //屏幕大小发生变化,重新获取宽高
+    window.onresize = function () {
+        size(arrs)
+    };
+    /**
+     *屏幕大小发生变化时更新数据
+     * @param arr  新的数据
+     */
+    function size(arr) {
+        clearInterval(timer);
+        //获取屏幕宽高
+        h = $(window).height()
+        w = $(window).width();
+        //柱状图整体的宽高
+        h = 0.6 * h;
+        w = 0.8 * w;
+        //设置柱状图高度,上.左外边距;使其居中
+        $("#main").height(h).css({marginLeft: -0.5 * w, marginTop: -0.5 * h});
+        //设置柱子的位置,高度,柱子上方的数字显示
+        lines = $('.line');
+        for (var i = 0; i < lines.length; i++) {
+            if (!lines[i]) {
+                continue;
+            }
+            $(lines[i]).css({
+                width: 100 / 12 + "%",
+                left: i * 100 / 12 + "%",
+                backgroundColor: arr[i].color
+            })
+            $(".name").eq(i).css({
+                width: 100 / 12 + "%",
+                left: $(lines[i]).css("left")
+            });
+        }
+        //设置图片容器的大小,位置
+        $(".img").css({
+            width: $(".line").width() + "px",
+            height: $(".line").width() + "px",
+            position: "absolute",
+            top: "-" + (20 + $(".line").width()) + "px"
+        })
+        //数据定时更新
+        timer = setInterval(function () {
+            $.ajax({
+                url: "/update",
+                type: "get",
+                success: function (data) {
+                    if(data&&data.win){
+                        win=data.win
+                    }else{
+                        win=0;
+                        $("h3").hide().find("#win").html("");
+                    }
+
+                    if (data && data.sort) {
+                        sort = data.sort;
+                    } else {
+                        sort = 0;
+                    }
+                    if (data && data.maxScores) {
+                        maxScores = data.maxScores
+
+                    } else {
+                        maxScores = 100;
+
+                    }
+                    if (data && data.title) {
+                        $("h2").html(data.title);
+
+                    } else {
+                        $("h2").html("比赛打分系统");
+
+                    }
+
+                    if (data && data.list) {
+                        for (var i = 0; i < arrs.length; i++) {
+                            arrs[i].name = data.list[i].name
+                            arrs[i].scores = data.list[i].scores
+                            arrs[i].color = data.list[i].color
+                        }
+                        if (sort) {
+                            //停止动画
+                            clearInterval(animals);
+                            indexs.length = 0;
+                            //判断是否有多个最高分平分的
+                            var winArr=[];
+                            var lines = $(".line");
+                            for (var j = 0; j < lines.length; j++) {
+                                $(lines[j]).css({
+                                    backgroundColor: arrs[j].color,
+                                    height: h * arrs[j].scores / maxScores + "px"
+                                }).find(".font").html(arrs[j].scores);
+                                $(".name").eq(j).html(arrs[j].name);//队名
+                                if(arrs[j].scores==arrs[0].scores){
+                                    winArr.push(arrs[j].name)
+                                }
+
+                            }
+                            if(win==1){
+                                $("h3").show().find("#win").html(winArr.join());
+                            }
+
+                        } else {
+                            update($(".line"), arrs, h)
+                        }
+                    } else {
+                        update($(".line"), arrs, h)
+                    }
+                }
+            })
+        }, 500)
+    }
+
+    //缓动函数
+    /**
+     *
+     * @param eles  运动的柱子
+     * @param tar  新数据，分数+队名
+     * @param h    总高度
+     */
+    function update(eles, tar, h) {
+        clearInterval(animals);//使用前先清除定时器
+        animals = setInterval(function () {
+            var f = true;
+            for (var i = 0; i < eles.length; i++) {
+                $(".name").eq(i).html(tar[i].name);//队名
+                $(eles[i]).css("backgroundColor", tar[i].color);//背景色
+                var sped = tar[i].scores - $(eles[i]).find(".font").html();  //设定运动方向
+                if (sped > 0) {
+                    sped = 0.5
+                } else if (sped < 0) {
+                    sped = -0.5
+                } else {
+                    sped = 0
+                }
+                var now = Number($(eles[i]).find(".font").html());        //获取当前分数
+                var tars = tar[i].scores;               //目标值
+                //等于目标值或小于一单位速度，直接等于目标值
+                if (now == tars || Math.abs(tars - now) < 1) {
+                    $(eles[i]).height(h * tars / maxScores).find(".font").html(tars);
+                    continue;
+                } else {
+                    startPng(i);//当前开始跳动的动画
+                    f = false;
+                    tars = now + sped;
+                    $(eles[i]).height(h * tars / maxScores).find(".font").html(tars);
+                }
+            }
+            if (f) {
+                clearInterval(animals)
+            }
+        }, 100)
+    }
+
+    size(arrs)
+
+    indexs = [];//用于存储停止跳动的柱子的下标
+    function startPng(index) {
+        indexs.push(index);
+    }
+
+
+    //图片跳动
+    spedng = 0;//移动速度
+    pngs = $(".png");
+    png = setInterval(function () {
+        if (indexs.length > 0) {
+            var data = indexs.splice(0);//获取跳动的元素下标
+            for (var i = 0; i < pngs.length; i++) {
+                //如果跳动
+                var now = 100 * parseFloat($(pngs[i]).css("marginTop")) / $(".img").width();
+                if (data.indexOf(i) != -1) {
+                    var tar;
+                    if (now == 0 || now < 0) {
+                        tar = 50;
+                    }
+                    if (now > 40) {
+                        tar = 0;
+                    }
+
+                    $(pngs[i]).css("marginTop", tar + "%");
+                } else {
+                    $(pngs[i]).css("marginTop", "50%");
+                }
+
+            }
+
+        } else {
+            for (var k = 0; k < pngs.length; k++) {
+                $(pngs[k]).css("marginTop", "50%");
+
+            }
+        }
+
+
+    }, 400)
+
+</script>
+</html>

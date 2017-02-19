@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+    <link rel="stylesheet" href="/login.css">
+    <link rel="stylesheet" href="/bootstrap.css">
+    <script src="/jquery.js"></script>
+</head>
+<body>
+<div class="loginBG clearfix">
+    <div class="text-center loginscreen">
+        <div class="Login_Title" style="padding-bottom: 20px;">
+            <h1 clas="TitleChina" style="letter-spacing: 4px">中学生运动打分系统</h1>
+            <h5 clas="TitleChina">High school students track and field sports marks system</h5>
+        </div>
+        <form class="m-" role="form" >
+            <div class="loginBox">
+                <div class="LoginCon">
+                    <span id="message"></span>
+                    <div class="form-group">
+                        <img src="/images/person.png">
+                        <input type="email" class="person form-control" placeholder="请输入账号" name="user[email]" required/>
+                    </div>
+                    <div class="form-group">
+                        <img src="/images/lock.png">
+
+                        <input type="password" class="lock form-control" placeholder="请输入密码" name="user[password]"
+                               required/>
+                    </div>
+
+                    <div class="form-group" id='sub'>
+                        <button type="button" class="btn  btn-block" style="background-color: #0672c8"><a style="color:#fff;text-decoration: none;">登 录</a></button>
+                    </div>
+                    <div class="LoginB">
+                        <span><a href="javascript:void(0);">忘记密码?</a> | <a href='javascript:void(0);'>注册新账号</a></span>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<div class="footer" style="font-size: 12px;color: #666">
+    <div style="height: 40px;line-height: 60px" >
+        <span style="margin-right:15px;">主办单位：教育委员会 、体育局</span>
+        <span style="color:#ddd">|</span><span style="margin:0 15px;">承办单位：学生活动管理中心 </span><span style="color:#ddd">|</span>
+        <span style="margin-left:15px;">协办单位：区教委、 区体育局</span>
+    </div>
+
+
+    <div style="height: 40px;line-height: 40px"> <span style="margin-right:10px;">业务咨询电话：13641057939 、87550350</span><span style="color:#ddd">|</span><span style="margin-left: 10px;"> 技术支持电话：82364972、82364980 </span></div>
+</div>
+</body>
+<script>
+    $(function(){
+        //点击登陆
+        $("#sub").on("click",function(){
+            var user=$('.person').val();
+            var password=$('.lock').val();
+            if(user=="admin"&&password=="admin"){
+                window.location.href="/manage";
+            }else if(user=="users"&&password=="123"){
+                window.location.href="/users";
+
+            }else{
+                alert('密码或用户名错误')
+            }
+        })
+//回车登陆
+        $(document).keyup(function(e){
+            if(e.keyCode==13){
+                $("#sub").triggerHandler("click");
+            }
+        })
+
+
+    })
+</script>
+</html>

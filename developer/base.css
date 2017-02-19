@@ -1,0 +1,9 @@
+.clear::before,.clear::after{
+    display: block;
+    clear: both;
+    content: '';
+    zoom:1;
+}
+ul{
+    max-width: 1200px;
+}
